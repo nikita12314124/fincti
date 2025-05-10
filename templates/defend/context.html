@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Выбор контекста{% endblock %}
+
+{% block content %}
+<div class="container my-5" style="max-width: 720px">
+  <h1 class="mb-4 fw-bold">1. Выберите контекст</h1>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <!-- Секторы -->
+    <h5 class="mt-3">Секторы:</h5>
+    {% for cb in form.sector %}
+      <div class="form-check">
+        {{ cb.tag }} {{ cb.choice_label }}
+      </div>
+    {% empty %}
+      <p class="text-muted">Секторы не заведены.</p>
+    {% endfor %}
+
+    <!-- Регионы -->
+    <h5 class="mt-4">Регионы:</h5>
+    {% for cb in form.region %}
+      <div class="form-check">
+        {{ cb.tag }} {{ cb.choice_label }}
+      </div>
+    {% empty %}
+      <p class="text-muted">Регионы не заведены.</p>
+    {% endfor %}
+
+    <!-- Источники телеметрии -->
+    <h5 class="mt-4">Источники:</h5>
+    {% for cb in form.sources %}
+      <div class="form-check">
+        {{ cb.tag }} {{ cb.choice_label }}
+      </div>
+    {% empty %}
+      <p class="text-muted">Источники не заведены.</p>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary mt-4">Сохранить</button>
+  </form>
+</div>
+{% endblock %}

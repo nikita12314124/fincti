@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Анализ покрытия процедур</h1>
+
+<form id="analysis-form">
+  <h3>Сектора</h3>
+  {% for s in sectors %}
+    <label><input type="checkbox" name="sectors" value="{{ s.name }}"> {{ s.name }}</label><br>
+  {% endfor %}
+  <h3>Регионы</h3>
+  {% for r in regions %}
+    <label><input type="checkbox" name="regions" value="{{ r.name }}"> {{ r.name }}</label><br>
+  {% endfor %}
+  <h3>Источники</h3>
+  {% for src in sources %}
+    <label><input type="checkbox" name="sources" value="{{ src.name }}"> {{ src.name }}</label><br>
+  {% endfor %}
+  <h3>Матрицы</h3>
+  <label>Detection:
+    <select name="detect_matrix">
+      <option value="">—</option>
+      {% for m in detect_matrices %}
+        <option value="{{ m.name }}">{{ m.name }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Defend:
+    <select name="defend_matrix">
+      <option value="">—</option>
+      {% for m in defend_matrices %}
+        <option value="{{ m.name }}">{{ m.name }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <br><button type="submit">Запустить анализ</button>
+</form>
+
+<h2>Результаты</h2>
+<table id="results-table" border="1">
+  <thead>
+    <tr>
+      <th>Group</th><th>Procedure</th><th>Technique</th>
+      <th>DetCov</th><th>DefCov</th><th>Score</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+document.getElementById('analysis-form').onsubmit = async e => {
+  e.preventDefault();
+  const form = e.target;
+  const data = {
+    sectors: Array.from(form.querySelectorAll('input[name="sectors"]:checked')).map(c=>c.value),
+    regions: Array.from(form.querySelectorAll('input[name="regions"]:checked')).map(c=>c.value),
+    sources: Array.from(form.querySelectorAll('input[name="sources"]:checked')).map(c=>c.value),
+    sources: Array.from(form.querySelectorAll('input[name="sources"]:checked')).map(c=>c.value),
+    detect_matrix: form.detect_matrix.value,
+    defend_matrix: form.defend_matrix.value,
+  };
+  const res = await fetch('/api/analysis/', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(data)
+  });
+  const json = await res.json();
+  const tbody = document.querySelector('#results-table tbody');
+  tbody.innerHTML = '';
+  json.forEach(r => {
+    const tr = document.createElement('tr');
+    ['group','procedure','technique','detect_cov','defend_cov','score'].forEach(k=>{
+      const td = document.createElement('td');
+      td.textContent = r[k];
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+};
+</script>
+{% endblock %}

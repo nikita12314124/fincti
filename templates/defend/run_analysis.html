@@ -1,0 +1,15 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+  <h1>Анализ покрытия процедур</h1>
+  <form method='post'>{% csrf_token %}
+    {{ form.as_p }}
+    <button type='submit' class='default'>Запустить анализ</button>
+  </form>
+  {% if messages %}
+    <div class='messagelist'>
+      {% for msg in messages %}
+        <div class='{{ msg.tags }}'>{{ msg|safe }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock %}

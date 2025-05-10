@@ -1,24 +1,51 @@
 from django.db import models
-from cti.models import Technique, TelemetrySource
+
 
 class DefendMatrix(models.Model):
-    name        = models.CharField(max_length=200, unique=True)
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-    description = models.TextField(blank=True)
+    """
+    Пользователь загружает любой D3FEND-JSON – мы даём ему имя.
+    """
+    name = models.CharField(max_length=128, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-class DefendCoverageEntry(models.Model):
-    matrix           = models.ForeignKey(DefendMatrix,   on_delete=models.CASCADE, related_name='coverage_entries')
-    technique        = models.ForeignKey(Technique,      on_delete=models.CASCADE, related_name='defend_entries')
-    telemetry_source = models.ForeignKey(TelemetrySource,on_delete=models.CASCADE, related_name='defend_entries')
-    coverage         = models.FloatField(default=1.0)
+    def __str__(self) -> str:  # админка
+        return self.name
+
 
 class DetectionMatrix(models.Model):
-    name        = models.CharField(max_length=200, unique=True)
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-    description = models.TextField(blank=True)
+    """
+    Навигатор-heatmap или CSV с покрытием детектов.
+    """
+    name = models.CharField(max_length=128, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-class DetectionCoverageEntry(models.Model):
-    matrix           = models.ForeignKey(DetectionMatrix,on_delete=models.CASCADE, related_name='entries')
-    technique        = models.ForeignKey(Technique,      on_delete=models.CASCADE, related_name='detection_entries')
-    telemetry_source = models.ForeignKey(TelemetrySource,on_delete=models.CASCADE, related_name='detection_entries')
-    coverage         = models.FloatField()
+    def __str__(self) -> str:
+        return self.name
+
+
+class DefendCell(models.Model):
+    """
+    Одна процедура «defense-measure» из D3FEND.
+    """
+    matrix = models.ForeignKey(
+        DefendMatrix, related_name="cells", on_delete=models.CASCADE
+    )
+    d3_id = models.CharField(max_length=32)
+    name = models.CharField(max_length=256, blank=True)
+
+    class Meta:
+        unique_together = ("matrix", "d3_id")
+
+
+class DetectCell(models.Model):
+    """
+    Покрытие техники / процедуры из Detection-heatmap.
+    """
+    matrix = models.ForeignKey(
+        DetectionMatrix, related_name="cells", on_delete=models.CASCADE
+    )
+    technique_id = models.CharField(max_length=32)
+    score = models.FloatField(default=0)
+
+    class Meta:
+        unique_together = ("matrix", "technique_id")

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}FinTech CTI Framework{% endblock %}
+
+{% block content %}
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>FinTech CTI Framework</h1>
+      <p>Автоматизация приоритизации процедур атак Fin-APT группировок по отраслевому и региональному контексту, с учётом ваших SIEM-источников.</p>
+      <a href="{% url 'select-context' %}" class="btn btn-primary">Начать анализ</a>
+    </div>
+  </section>
+
+  <!-- Возможности -->
+  <div class="container">
+    <div class="card-feature">
+      <h2>Что умеет платформа?</h2>
+      <ul>
+        <li>Задать <strong>регион</strong>, <strong>сектор</strong> и <strong>источники телеметрии</strong>;</li>
+        <li>Загрузить матрицы покрытия <em>(MITRE ATT&amp;CK и D3FEND)</em>;</li>
+        <li>Вычислить, какие процедуры остаются незакрытыми;</li>
+        <li>Упорядочить группировки и процедуры по уровню риска;</li>
+        <li>Экспортировать результаты для отчётности.</li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}

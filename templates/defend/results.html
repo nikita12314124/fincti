@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Результаты анализа{% endblock %}
+{% block content %}
+<h2>3. Результаты</h2>
+
+{% if results %}
+  <p><strong>{{ total }}</strong></p>
+  {% for group in groups %}
+    <h4>Group: {{ group }} (max score: {{ results|filterattr:"group,{{group}}"|first.score }})</h4>
+    <table class="table table-sm">
+      <thead><tr>
+        <th>Procedure</th><th>Technique</th>
+        <th>DetCov</th><th>DefCov</th><th>Score</th>
+      </tr></thead>
+      <tbody>
+      {% for r in results %}
+        {% if r.group == group %}
+        <tr>
+          <td>{{ r.procedure }}</td>
+          <td>{{ r.technique }}</td>
+          <td>{{ r.detect_cov }}</td>
+          <td>{{ r.defend_cov }}</td>
+          <td>{{ r.score }}</td>
+        </tr>
+        {% endif %}
+      {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+
+{% else %}
+  <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary">Запустить анализ</button>
+  </form>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,112 @@
+/* 1) Шрифт Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* 2) Цветовая схема в духе Kaspersky */
+:root {
+  --brand-primary: #00A650;   /* Kaspersky Green */
+  --brand-dark:    #0F1E1A;   /* очень тёмный зелёный/чёрный */
+  --brand-light:   #F7F9F8;   /* почти белый с лёгким зелёным оттенком */
+  --text-main:     #17201E;   /* ровно-чёрный */
+  --text-light:    #FFFFFF;
+  --bg-page:       #F7F9F8;
+  --radius:        .5rem;
+}
+
+/* 3) Сброс и базовые */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-page);
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+/* 4) Navbar */
+.navbar {
+  background: var(--brand-dark);
+  padding: .75rem 1rem;
+}
+.navbar-brand {
+  color: var(--text-light);
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+}
+.navbar-nav .nav-link {
+  color: rgba(255,255,255,0.85);
+  margin-left: 1.5rem;
+  font-weight: 500;
+}
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: var(--brand-primary);
+}
+
+/* 5) Hero */
+.hero {
+  position: relative;
+  background: url('/static/images/hero-bg.jpg') center/cover no-repeat;
+  color: var(--text-light);
+  text-align: center;
+  padding: 6rem 1rem;
+}
+.hero::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: rgba(15,30,26,0.75);
+}
+.hero .hero-content {
+  position: relative; z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.hero p {
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+  opacity: .9;
+}
+.hero .btn-primary {
+  background: var(--brand-primary);
+  border: none;
+  padding: .75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--radius);
+}
+.hero .btn-primary:hover {
+  background: #009045;
+}
+
+/* 6) Карточка-фича */
+.card-feature {
+  background: var(--brand-light);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  margin: 3rem 0;
+  padding: 2rem;
+}
+.card-feature h2 {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.card-feature ul {
+  padding-left: 1.2rem;
+}
+.card-feature ul li {
+  margin-bottom: .5rem;
+}
+
+/* 7) Footer */
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: .875rem;
+  color: #555;
+  border-top: 1px solid #e0e0e0;
+}
